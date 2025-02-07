@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="next">Siguiente</string>
+    <string name="previous">Anterior</string>
+    <string name="continuer_avec_facebook">Continuar con Facebook</string>
+    <string name="cr_un_compte">Registrarse</string>
+    <string name="nouveau_sur_powerhome">¿Nuevo en PowerHome?</string>
+    <string name="mot_de_passe_oubli">¿Olvidaste tu contraseña?</string>
+    <string name="connectez_vous">Iniciar sesión</string>
+    <string name="mot_de_passe">Contraseña</string>
+    <string name="email">Correo electrónico</string>
+    <string name="identifiez_vous">Acceder</string>
+    <string name="ou">O</string>
+    <string name="nom">Apellido</string>
+    <string name="pr_nom">Nombre</string>
+    <string name="mobile">Móvil</string>
+</resources>

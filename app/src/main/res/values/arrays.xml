@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="phone_array">
+        <item>+33</item>
+        <item>+44</item>
+        <item>+34</item>
+        <item>+15</item>
+        <item>+93</item>
+        <item>+54</item>
+        <item>+43</item>
+        <item>+55</item>
+    </string-array>
+</resources>
