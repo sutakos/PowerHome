@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="5dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:elevation="4dp"
+        android:padding="16dp"
+        android:background="@color/white"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/residentName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gaëtan Leclair"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:fontFamily="sans-serif-medium"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="100"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+            <TextView
+                android:id="@+id/nbEquipements"
+                android:layout_weight="50"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@android:color/darker_gray"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="50"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="4dp">
+                <ImageView
+                    android:id="@+id/icone1"
+                    android:paddingRight="5dp"
+                    android:layout_width="25dp"
+                    android:layout_height="15dp"/>
+
+                <ImageView
+                    android:id="@+id/icone2"
+                    android:paddingRight="5dp"
+                    android:layout_width="25dp"
+                    android:layout_height="15dp"/>
+
+                <ImageView
+                    android:id="@+id/icone3"
+                    android:paddingRight="5dp"
+                    android:layout_width="25dp"
+                    android:layout_height="15dp"/>
+
+                <ImageView
+                    android:id="@+id/icone4"
+                    android:paddingRight="5dp"
+                    android:layout_width="25dp"
+                    android:layout_height="15dp" />
+            </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/cadre"
+            android:padding="3dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ETAGE"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/green">
+
+                <TextView
+                    android:id="@+id/nbEtage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:textColor="@color/white"
+                    />
+        </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

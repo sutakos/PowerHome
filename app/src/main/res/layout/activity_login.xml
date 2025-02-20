@@ -49,6 +49,7 @@
             android:cropToPadding="true"
             android:src="@drawable/mailicon"/>
         <EditText
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="@android:color/darker_gray"
@@ -71,6 +72,7 @@
             android:cropToPadding="true"
             android:src="@drawable/lockicon"/>
         <EditText
+            android:id="@+id/mdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="60dp"
@@ -87,6 +89,7 @@
         android:textColor="@android:color/holo_blue_dark"
         android:paddingBottom="25dp"/>
     <Button
+        android:id="@+id/loginbtn"
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"

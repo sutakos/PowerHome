@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'iut.dam.powerhome'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "iut.dam.powerhome"
@@ -39,6 +39,9 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
+    implementation(libs.material.v141)
+    implementation ("com.google.android.material:material:1.4.1")
+    implementation ("androidx.drawerlayout:drawerlayout:1.1.1")
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

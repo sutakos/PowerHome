@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/monhabitat"
+        android:icon="@drawable/ic_aspirateur"
+        android:title="@string/habitats"/>
+    <item
+        android:id="@+id/habitat"
+        android:icon="@drawable/ic_aspirateur"
+        android:title="@string/mon_habitat"/>
+    <item
+        android:id="@+id/requete"
+        android:icon="@drawable/ic_aspirateur"
+        android:title="@string/mes_requetes"/>
+    <item
+        android:id="@+id/setting"
+        android:icon="@drawable/ic_aspirateur"
+        android:title="@string/settings"/>
+    <item
+        android:id="@+id/disconnect"
+        android:icon="@drawable/ic_aspirateur"
+        android:title="@string/se_deconnecter"/>
+
+</menu>
