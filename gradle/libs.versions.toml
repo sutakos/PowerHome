@@ -12,6 +12,7 @@ materialVersion = "1.4.1"
 navigationFragment = "2.8.5"
 navigationUi = "2.8.5"
 ion = "3.1.0"
+gson = "2.12.1"
 
 [libraries]
 implementation_androidx-drawerlayout = { module = "implementation (\"androidx.drawerlayout:drawerlayout", version.ref = "drawerlayoutVersion" }
@@ -26,6 +27,7 @@ material-v141 = { module = "com.google.android.material:material", version.ref =
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 ion = {group = "com.koushikdutta.ion",name="ion",version.ref="ion"}
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

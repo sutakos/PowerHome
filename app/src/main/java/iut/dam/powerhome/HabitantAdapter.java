@@ -10,12 +10,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class HabitantAdapter extends ArrayAdapter<Habitant> {
+import entities.Habitat;
+
+public class HabitantAdapter extends ArrayAdapter<Habitat> {
     Activity activity;
     int itemResourceId;
-    List<Habitant> items;
+    List<Habitat> items;
 
-    public HabitantAdapter(Activity activity, int itemResourceId, List<Habitant> items) {
+    public HabitantAdapter(Activity activity, int itemResourceId, List<Habitat> items) {
         super(activity, itemResourceId, items);
         this.activity = activity;
         this.itemResourceId = itemResourceId;
