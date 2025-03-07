@@ -40,6 +40,7 @@ dependencies {
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
     implementation(libs.material.v141)
+    implementation(libs.ion)
     implementation ("com.google.android.material:material:1.4.1")
     implementation ("androidx.drawerlayout:drawerlayout:1.1.1")
     testImplementation libs.junit
