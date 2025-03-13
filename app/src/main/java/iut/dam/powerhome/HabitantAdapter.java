@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 import java.util.Objects;
 
-import entities.Habitat;
+import iut.dam.powerhome.entities.Habitat;
 
 public class HabitantAdapter extends ArrayAdapter<Habitat> {
     Activity activity;

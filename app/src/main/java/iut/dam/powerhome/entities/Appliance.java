@@ -1,4 +1,4 @@
-package entities;
+package iut.dam.powerhome.entities;
 
 import java.util.ArrayList;
 import java.util.List;

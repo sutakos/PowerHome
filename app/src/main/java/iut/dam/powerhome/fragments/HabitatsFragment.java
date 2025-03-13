@@ -21,7 +21,7 @@ import com.koushikdutta.ion.Response;
 
 import java.util.List;
 
-import entities.Habitat;
+import iut.dam.powerhome.entities.Habitat;
 import iut.dam.powerhome.HabitantAdapter;
 import iut.dam.powerhome.R;
 
@@ -57,14 +57,16 @@ public class HabitatsFragment extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        String urlString = "http://10.125.132.73/powerhome_server/getHabitats.php?token=";
+        String urlString = "http://10.125.134.12/powerhome_server/getHabitats.php?token=eef0090d0b8815354a31943767b0a32f";
         Ion.with(this.getActivity())
                 .load(urlString)
                 .asString()
+                .withResponse()
                 .setCallback(new FutureCallback<Response<String>>() {
                     @Override
                     public void onCompleted(Exception e, Response<String> result) {
                         String json = result.getResult();
+                        Log.d("JSON Response", json);
                         pDialog.dismiss();
                         if(result == null)
                             Log.d(TAG, "No response from the server!!!");
@@ -72,7 +74,8 @@ public class HabitatsFragment extends Fragment {
                             // Traitement de result
                             Toast.makeText(HabitatsFragment.this.getActivity(), json, Toast.LENGTH_SHORT).show();
                             list = (List<Habitat>) Habitat.getFromJson(result.toString());
-
+                            //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            //startActivity(intent);
                         }
                     }
                 });
