@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
-                    android:paddingHorizontal="8dp"
+                    android:paddingStart="25dp"
                     android:paddingVertical="4dp"
                     android:textColor="@color/white"
                     />
