@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Habitat {
@@ -38,4 +39,23 @@ public class Habitat {
         return list;
     }
 
+    public String getResidentName() {
+        return user.firstName+" "+user.lastName;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public int nbEquipement() {
+        return appliances.size();
+    }
+
+    public List getAppliances() {
+        return appliances;
+    }
+
+    public Appliance getOneAppliance(int i){
+        return appliances.get(i);
+    }
 }

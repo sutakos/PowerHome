@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
 
-
         drawerDL = findViewById(R.id.drawer);
         navNV = findViewById(R.id.nav_view);
         toggle = new ActionBarDrawerToggle(this, drawerDL,

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Objects;
 
 import entities.Habitat;
 
@@ -47,13 +48,13 @@ public class HabitantAdapter extends ArrayAdapter<Habitat> {
         nbEquip.setText(String.valueOf(items.get(position).nbEquipement()));
 
         for(int i=0;i<items.get(position).getAppliances().size();i++){
-            if(items.get(position).getApp(i).getRef() == "ic_machine_a_laver")
+            if(Objects.equals(items.get(position).getOneAppliance(i).getReference(), "ic_machine_a_laver"))
                 icon[i].setImageResource(R.drawable.ic_machine_a_laver);
-            if(items.get(position).getApp(i).getRef() == "ic_aspirateur")
+            if(Objects.equals(items.get(position).getOneAppliance(i).getReference(), "ic_aspirateur"))
                 icon[i].setImageResource(R.drawable.ic_aspirateur);
-            if(items.get(position).getApp(i).getRef() == "ic_climatiseur")
+            if(Objects.equals(items.get(position).getOneAppliance(i).getReference(), "ic_climatiseur"))
                 icon[i].setImageResource(R.drawable.ic_climatiseur);
-            if(items.get(position).getApp(i).getRef() == "ic_fer_a_repasser")
+            if(Objects.equals(items.get(position).getOneAppliance(i).getReference(), "ic_fer_a_repasser"))
                 icon[i].setImageResource(R.drawable.ic_fer_a_repasser);
         }
         return layout;

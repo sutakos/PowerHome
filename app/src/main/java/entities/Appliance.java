@@ -23,4 +23,8 @@ public class Appliance {
         this.wattage = wattage;
         bookings = new ArrayList<>();
     }
+
+    public String getReference(){
+        return reference;
+    }
 }

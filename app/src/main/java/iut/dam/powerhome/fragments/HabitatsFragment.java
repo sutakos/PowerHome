@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.Response;
 
 import java.util.List;
 
@@ -39,10 +40,10 @@ public class HabitatsFragment extends Fragment {
         getActivity().setTitle("Habitats");
 
         View rootView = inflater.inflate(R.layout.fragment_habitats, container, false);
-
+        getRemoteHabitats();
         ListView lv = rootView.findViewById(R.id.lsHabitant);
         HabitantAdapter adapter = new HabitantAdapter(HabitatsFragment.this.getActivity(),R.layout.item_habitat,list);
-        lv.setAdapter(adapter);
+        //lv.setAdapter(adapter);
 
 
         return rootView;
@@ -56,20 +57,21 @@ public class HabitatsFragment extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        String urlString = "http://10.125.132.73/powerhome_server/getHabitats.php";
+        String urlString = "http://10.125.132.73/powerhome_server/getHabitats.php?token=";
         Ion.with(this.getActivity())
                 .load(urlString)
                 .asString()
-                .setCallback(new FutureCallback<String>() {
+                .setCallback(new FutureCallback<Response<String>>() {
                     @Override
-                    public void onCompleted(Exception e, String result) {
+                    public void onCompleted(Exception e, Response<String> result) {
+                        String json = result.getResult();
                         pDialog.dismiss();
                         if(result == null)
                             Log.d(TAG, "No response from the server!!!");
                         else {
                             // Traitement de result
-                            Toast.makeText(HabitatsFragment.this.getActivity(), result, Toast.LENGTH_SHORT).show();
-                            list = (List<Habitat>) Habitat.getFromJson(result);
+                            Toast.makeText(HabitatsFragment.this.getActivity(), json, Toast.LENGTH_SHORT).show();
+                            list = (List<Habitat>) Habitat.getFromJson(result.toString());
 
                         }
                     }
