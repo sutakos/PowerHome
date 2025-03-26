@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">PowerHome</string>
+    <string name="app_name" translatable="false">EChOme</string>
     <string name="let_s_go" translatable="false">Let\'s go</string>
     <string name="salut_iut_de_paris" translatable="false">Salut IUT de Paris</string>
     <!-- Strings used for fragments for navigation -->

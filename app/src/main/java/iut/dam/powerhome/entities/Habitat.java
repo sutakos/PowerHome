@@ -1,6 +1,7 @@
 package iut.dam.powerhome.entities;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -13,6 +14,7 @@ public class Habitat {
     public int floor;
     public double area;
     public User user;
+    public String residentName;
     public List<Appliance> appliances;
 
     public Habitat() {
@@ -24,6 +26,16 @@ public class Habitat {
         this.floor = floor;
         this.area = area;
         appliances = new ArrayList<>();
+
+    }
+
+    public Habitat(int id, String residentName, int floor, double area, List<Appliance> appliances) {
+        this.id = id;
+        this.residentName = residentName;
+        this.floor = floor;
+        this.area = area;
+        this.appliances = appliances;
+
     }
 
     public static Habitat getFromJson(String json){
@@ -39,7 +51,7 @@ public class Habitat {
     }
 
     public String getResidentName() {
-        return user.firstName+" "+user.lastName;
+        return residentName;
     }
 
     public int getFloor() {

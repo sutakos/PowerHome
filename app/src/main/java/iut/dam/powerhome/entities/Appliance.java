@@ -27,4 +27,5 @@ public class Appliance {
     public String getReference(){
         return reference;
     }
+    public String getName(){return name;}
 }

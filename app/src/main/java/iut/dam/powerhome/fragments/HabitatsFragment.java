@@ -19,6 +19,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import iut.dam.powerhome.entities.Habitat;
@@ -28,8 +29,12 @@ import iut.dam.powerhome.R;
 
 public class HabitatsFragment extends Fragment {
     String urlString = "http://[server]/powerhome_server/getHabitats.php";
-    List<Habitat> list;
+    List<Habitat> habitats = new ArrayList<>();
     ProgressDialog pDialog;
+    HabitantAdapter adapter;
+    boolean isAdapterInitialized = false;
+    ListView lv;
+
     public HabitatsFragment() {
         // Required empty public constructor
     }
@@ -40,13 +45,20 @@ public class HabitatsFragment extends Fragment {
         getActivity().setTitle("Habitats");
 
         View rootView = inflater.inflate(R.layout.fragment_habitats, container, false);
+        lv =rootView.findViewById(R.id.lsHabitant);
         getRemoteHabitats();
-        ListView lv = rootView.findViewById(R.id.lsHabitant);
-        HabitantAdapter adapter = new HabitantAdapter(HabitatsFragment.this.getActivity(),R.layout.item_habitat,list);
-        //lv.setAdapter(adapter);
-
 
         return rootView;
+    }
+
+    private void initializeAdapter() {
+        if (!isAdapterInitialized && !habitats.isEmpty()) {
+            adapter = new HabitantAdapter(getActivity(), R.layout.item_habitat, habitats);
+            lv.setAdapter(adapter);
+            isAdapterInitialized = true;
+        } else if (isAdapterInitialized) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
 
@@ -57,7 +69,7 @@ public class HabitatsFragment extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        String urlString = "http://10.125.134.12/powerhome_server/getHabitats.php?token=eef0090d0b8815354a31943767b0a32f";
+        String urlString = "http://192.168.1.19/powerhome_server/getHabitats_v2.php?token=0645901e34c2fbe1c0e3761642e728a3";
         Ion.with(this.getActivity())
                 .load(urlString)
                 .asString()
@@ -65,17 +77,17 @@ public class HabitatsFragment extends Fragment {
                 .setCallback(new FutureCallback<Response<String>>() {
                     @Override
                     public void onCompleted(Exception e, Response<String> result) {
-                        String json = result.getResult();
-                        Log.d("JSON Response", json);
+                        Response<String> json = result;
+                        Log.d("JSON Response", json.getResult());
                         pDialog.dismiss();
                         if(result == null)
                             Log.d(TAG, "No response from the server!!!");
                         else {
                             // Traitement de result
-                            Toast.makeText(HabitatsFragment.this.getActivity(), json, Toast.LENGTH_SHORT).show();
-                            list = (List<Habitat>) Habitat.getFromJson(result.toString());
-                            //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            //startActivity(intent);
+                            Toast.makeText(HabitatsFragment.this.getActivity(), json.getResult(), Toast.LENGTH_SHORT).show();
+                            habitats.clear();
+                            habitats.addAll(Habitat.getListFromJson(json.getResult()));
+                            initializeAdapter();
                         }
                     }
                 });

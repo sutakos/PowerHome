@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:textSize="25dp"
-            android:text="@string/connectez_vous"
+            android:hint="@string/connectez_vous"
             android:textColor="@color/white"/>
 
     </LinearLayout>
@@ -52,10 +52,10 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@android:color/darker_gray"
             android:backgroundTint="@android:color/darker_gray"
             android:paddingLeft="60dp"
-            android:text="@string/email"/>
+            android:hint="@string/email"
+            android:textColorHint="@android:color/darker_gray"/>
     </LinearLayout>
 
     <LinearLayout
@@ -76,9 +76,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="60dp"
-            android:textColor="@android:color/darker_gray"
+            android:textColorHint="@android:color/darker_gray"
             android:backgroundTint="@android:color/darker_gray"
-            android:text="@string/mot_de_passe"/>
+            android:hint="@string/mot_de_passe"/>
     </LinearLayout>
     <TextView
         android:layout_gravity="right"

@@ -48,13 +48,13 @@ public class HabitantAdapter extends ArrayAdapter<Habitat> {
         nbEquip.setText(String.valueOf(items.get(position).nbEquipement()));
 
         for(int i=0;i<items.get(position).getAppliances().size();i++){
-            if(Objects.equals(items.get(position).getOneAppliance(i).getReference(), "ic_machine_a_laver"))
+            if(Objects.equals(items.get(position).getOneAppliance(i).getName(), "ic_machine_a_laver"))
                 icon[i].setImageResource(R.drawable.ic_machine_a_laver);
-            if(Objects.equals(items.get(position).getOneAppliance(i).getReference(), "ic_aspirateur"))
+            if(Objects.equals(items.get(position).getOneAppliance(i).getName(), "Aspirateur"))
                 icon[i].setImageResource(R.drawable.ic_aspirateur);
-            if(Objects.equals(items.get(position).getOneAppliance(i).getReference(), "ic_climatiseur"))
+            if(Objects.equals(items.get(position).getOneAppliance(i).getName(), "ic_climatiseur"))
                 icon[i].setImageResource(R.drawable.ic_climatiseur);
-            if(Objects.equals(items.get(position).getOneAppliance(i).getReference(), "ic_fer_a_repasser"))
+            if(Objects.equals(items.get(position).getOneAppliance(i).getName(), "ic_fer_a_repasser"))
                 icon[i].setImageResource(R.drawable.ic_fer_a_repasser);
         }
         return layout;
