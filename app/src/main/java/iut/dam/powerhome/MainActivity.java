@@ -1,7 +1,10 @@
 package iut.dam.powerhome;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -33,9 +36,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-
+        // Barre de navigation
         drawerDL = findViewById(R.id.drawer);
         navNV = findViewById(R.id.nav_view);
+
+        // Header de la barre de navigation
+        View headerView = navNV.getHeaderView(0);
+        TextView mail_name = headerView.findViewById(R.id.user_name);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        assert bundle != null;
+        String email = bundle.getString("mail");
+        mail_name.setText(email);
+
         toggle = new ActionBarDrawerToggle(this, drawerDL,
                         R.string.open, R.string.close);
 
