@@ -2,21 +2,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_marginTop="22dp">
 
     <FrameLayout
         android:id="@+id/contentFL"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_marginTop="48dp"/>
+
 
     <com.google.android.material.navigation.NavigationView
-android:id="@+id/nav_view"
+        android:id="@+id/nav_view"
 
-android:layout_width="wrap_content"
-android:layout_height="match_parent"
-android:layout_gravity="start"
-android:layout_marginTop="?android:attr/actionBarSize"
-app:headerLayout="@layout/nav_header"
-app:menu="@menu/nav_menu"/>
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/nav_menu"/>
+
 
 </androidx.drawerlayout.widget.DrawerLayout>
+

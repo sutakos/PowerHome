@@ -42,7 +42,7 @@ dependencies {
     implementation(libs.material.v141)
     implementation(libs.ion)
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation ("com.google.android.material:material:1.4.1")
+    implementation ("com.google.android.material:material:1.12.0")
     implementation ("androidx.drawerlayout:drawerlayout:1.1.1")
     implementation libs.gson
     testImplementation libs.junit

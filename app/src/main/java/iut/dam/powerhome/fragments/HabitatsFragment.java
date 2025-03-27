@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import iut.dam.powerhome.entities.Habitat;
-import iut.dam.powerhome.HabitantAdapter;
+import iut.dam.powerhome.HabitatAdapter;
 import iut.dam.powerhome.R;
 
 
@@ -31,7 +31,7 @@ public class HabitatsFragment extends Fragment {
     String urlString = "http://[server]/powerhome_server/getHabitats.php";
     List<Habitat> habitats = new ArrayList<>();
     ProgressDialog pDialog;
-    HabitantAdapter adapter;
+    HabitatAdapter adapter;
     boolean isAdapterInitialized = false;
     ListView lv;
 
@@ -43,7 +43,6 @@ public class HabitatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         getActivity().setTitle("Habitats");
-
         View rootView = inflater.inflate(R.layout.fragment_habitats, container, false);
         lv =rootView.findViewById(R.id.lsHabitant);
         getRemoteHabitats();
@@ -53,7 +52,7 @@ public class HabitatsFragment extends Fragment {
 
     private void initializeAdapter() {
         if (!isAdapterInitialized && !habitats.isEmpty()) {
-            adapter = new HabitantAdapter(getActivity(), R.layout.item_habitat, habitats);
+            adapter = new HabitatAdapter(getActivity(), R.layout.item_habitat, habitats);
             lv.setAdapter(adapter);
             isAdapterInitialized = true;
         } else if (isAdapterInitialized) {

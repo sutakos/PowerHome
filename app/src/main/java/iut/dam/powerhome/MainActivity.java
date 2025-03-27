@@ -24,7 +24,7 @@ import iut.dam.powerhome.fragments.SeDeconnecterFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawerDL;
-    ActionBarDrawerToggle toggle;
+        ActionBarDrawerToggle toggle;
     FragmentManager fm;
     NavigationView navNV;
 

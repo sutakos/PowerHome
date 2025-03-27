@@ -13,12 +13,12 @@ import java.util.Objects;
 
 import iut.dam.powerhome.entities.Habitat;
 
-public class HabitantAdapter extends ArrayAdapter<Habitat> {
+public class HabitatAdapter extends ArrayAdapter<Habitat> {
     Activity activity;
     int itemResourceId;
     List<Habitat> items;
 
-    public HabitantAdapter(Activity activity, int itemResourceId, List<Habitat> items) {
+    public HabitatAdapter(Activity activity, int itemResourceId, List<Habitat> items) {
         super(activity, itemResourceId, items);
         this.activity = activity;
         this.itemResourceId = itemResourceId;
