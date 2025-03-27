@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:text="@string/votre_consommation"
         android:layout_gravity="center"
-        android:textSize="20sp"
+        android:textSize="20sp"/>
+
 
 
 
