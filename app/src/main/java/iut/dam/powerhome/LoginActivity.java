@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -23,7 +25,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import java.util.ArrayList;
+
 import iut.dam.powerhome.databinding.ActivityLoginBinding;
+import iut.dam.powerhome.entities.Appliance;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -100,9 +105,35 @@ public class LoginActivity extends AppCompatActivity {
                             // Connexion réussie
                             String token = response.get("token").getAsString();
                             String expiredAt = response.get("expired_at").getAsString();
+                            Log.d("RESPONSE",response.toString());
+
+                            // Récupération des appliances
+                            JsonArray appliancesArray = null;
+                            if(response.has("appliances")) {
+                                appliancesArray = response.getAsJsonArray("appliances");
+                            }
+
+                            ArrayList<Appliance> appliancesList = new ArrayList<>();
+                            if(appliancesArray != null) {
+                                for(JsonElement element : appliancesArray) {
+                                    JsonObject applianceObj = element.getAsJsonObject();
+                                    Appliance appliance = new Appliance(
+                                            applianceObj.get("id").getAsInt(),
+                                            applianceObj.get("name").getAsString(),
+                                            applianceObj.get("reference").getAsString(),
+                                            applianceObj.get("wattage").getAsInt()
+                                    );
+                                    appliancesList.add(appliance);
+                                }
+                            }
+
+
+
+
 
                             // Stocker le token et la date d'expiration pour les requêtes futures
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.putParcelableArrayListExtra("appliances", appliancesList);
                             intent.putExtra("token", token);
                             intent.putExtra("expired_at", expiredAt);
                             Bundle bundle = new Bundle();

@@ -11,11 +11,15 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
 
 
+import java.util.ArrayList;
+
+import iut.dam.powerhome.entities.Appliance;
 import iut.dam.powerhome.fragments.HabitatsFragment;
 import iut.dam.powerhome.fragments.MesRequetesFragment;
 import iut.dam.powerhome.fragments.MonHabitatFragment;
@@ -27,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle;
     FragmentManager fm;
     NavigationView navNV;
+    MonHabitatFragment monHabitat = new MonHabitatFragment();
 
 
 
@@ -64,6 +69,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navNV.setNavigationItemSelectedListener(this);
         navNV.getMenu().performIdentifierAction(R.id.habitat, 0);
 
+        Bundle app = new Bundle();
+        app.putParcelableArrayList("appliances",getIntent().getParcelableArrayListExtra("appliances"));
+        monHabitat.setArguments(app);
     }
 
     @Override
@@ -74,14 +82,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item){
         if (item.getItemId() == R.id.monhabitat){
             fm.beginTransaction().replace(R.id.contentFL,
-                    new MonHabitatFragment()).commit();
+                    monHabitat).commit();
         } else if (item.getItemId() == R.id.habitat) {
             fm.beginTransaction().replace(R.id.contentFL,
                     new HabitatsFragment()).commit();
         }
         else if (item.getItemId() == R.id.requete) {
             fm.beginTransaction().replace(R.id.contentFL,
-                    new MesRequetesFragment()).commit();
+                    new MesRequetesFragment())
+                    .commit();
         }
         else if (item.getItemId() == R.id.setting) {
             fm.beginTransaction().replace(R.id.contentFL,
