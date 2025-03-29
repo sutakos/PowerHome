@@ -53,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String inputTextP = editTextPass.getText().toString();
 
                 if(inputTextE.isEmpty() || inputTextP.isEmpty()) {
-                    Toast.makeText(RegisterActivity.this, "Veuillez saisir les champs", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegisterActivity.this, "Veuillez saisir un email/mot de passe", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
