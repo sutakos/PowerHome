@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        String urlString = "http://192.168.1.19/powerhome_server/login.php?email="
+        String urlString = "http://192.168.1.30/powerhome_server/login.php?email="
                 + email + "&password=" + password;
         Ion.with(LoginActivity.this)
                 .load(urlString) // Méthode GET par défaut

@@ -21,5 +21,6 @@ public class MesRequetesFragment extends Fragment {
                              Bundle savedInstanceState) {
         getActivity().setTitle("Mes requêtes");
         View rootView=inflater.inflate(R.layout.fragment_mes_requetes, container, false);
-        return rootView;}
+        return rootView;
+    }
 }
