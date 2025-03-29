@@ -47,6 +47,15 @@ public class LoginActivity extends AppCompatActivity {
         mail = findViewById(R.id.email);
         mdp = findViewById(R.id.mdp);
         Button loginbtn = findViewById(R.id.loginbtn);
+        Button registerbtn = findViewById(R.id.btn_register);
+
+        registerbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
 
         loginbtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

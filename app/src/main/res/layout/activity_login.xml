@@ -98,14 +98,16 @@
         android:textColor="@color/white"
         android:layout_height="wrap_content"
         android:text="@string/connectez_vous"/>
-    <TextView
+    <Button
+        android:id="@+id/btn_register"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cr_un_compte"
         android:textColor="@android:color/holo_blue_dark"
         android:paddingTop="15dp"
-        android:paddingBottom="30dp"/>
+        android:paddingBottom="30dp"
+        android:background="@android:color/transparent"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="25dp"

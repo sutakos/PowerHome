@@ -43,21 +43,22 @@ public class RegisterActivity extends AppCompatActivity {
         sp.setAdapter(adapter);
 
         EditText editTextEmail = findViewById(R.id.email_register);
-        String inputTextE = editTextEmail.getText().toString().trim();
         EditText editTextPass = findViewById(R.id.password_register);
-        String inputTextP = editTextPass.getText().toString().trim();
         Button btn_register = findViewById(R.id.button_register);
 
         btn_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String inputTextE = editTextEmail.getText().toString();
+                String inputTextP = editTextPass.getText().toString();
+
                 if(inputTextE.isEmpty() || inputTextP.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Veuillez saisir les champs", Toast.LENGTH_SHORT).show();
                     return;
-                } else {
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                    startActivity(intent);
                 }
+
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
 
