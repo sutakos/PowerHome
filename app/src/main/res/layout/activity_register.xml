@@ -14,10 +14,10 @@
         android:layout_height="wrap_content"
         android:background="@android:color/black">
         <ImageView
-            android:paddingLeft="15dp"
+            android:paddingLeft="0dp"
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:src="@drawable/flecheleft"/>
+            android:src="@drawable/baseline_arrow_back_24"/>
         <TextView
             android:paddingLeft="15dp"
             android:layout_width="match_parent"
@@ -59,8 +59,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="60dp"
-                android:text="@string/nom"/>
+                android:paddingStart="10dp"
+                android:hint="@string/nom"/>
         </LinearLayout>
         <LinearLayout
             android:layout_weight="12"
@@ -77,9 +77,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="60dp"
-                android:hint="@string/pr_nom"/>
-                hintcolor
+                android:paddingLeft="10dp"
+                android:hint="@string/pr_nom" />
         </LinearLayout>
         <LinearLayout
             android:layout_weight="12"
@@ -96,8 +95,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="60dp"
-                android:text="@string/email"/>
+                android:paddingLeft="10dp"
+                android:hint="@string/email"/>
         </LinearLayout>
         <LinearLayout
             android:layout_weight="12"
@@ -114,8 +113,8 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="60dp"
-                android:text="@string/mot_de_passe"/>
+                android:paddingLeft="10dp"
+                android:hint="@string/mot_de_passe"/>
         </LinearLayout>
         <LinearLayout
             android:layout_weight="12"
@@ -134,13 +133,13 @@
                 android:id="@+id/phone_spinner"
                 android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent" />
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="60dp"
-                android:text="@string/mobile"/>
+                android:paddingLeft="10dp"
+                android:hint="@string/mobile" />
         </LinearLayout>
 
     <Button
