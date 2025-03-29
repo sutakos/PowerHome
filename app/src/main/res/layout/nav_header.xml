@@ -17,7 +17,7 @@
             android:layout_height="45dp"
             android:src="@drawable/baseline_person_24"
             android:layout_gravity="start"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="15dp"
             android:background="@drawable/cercle_blanc" />
 
         <TextView
@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:text="@string/gaetan_leclair_toodo_com"
             android:textColor="@android:color/white"
-            android:textSize="15sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 
