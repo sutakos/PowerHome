@@ -9,10 +9,12 @@
     android:orientation="vertical"
     tools:context=".LoginActivity"
     android:layout_gravity="center">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/black">
+
         <ImageView
             android:paddingLeft="0dp"
             android:layout_width="55dp"
@@ -93,11 +95,13 @@
                 android:cropToPadding="true"
                 android:src="@drawable/mailicon"/>
             <EditText
+                android:id="@+id/email_register"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
                 android:hint="@string/email"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_weight="12"
             android:layout_width="match_parent"
@@ -111,11 +115,13 @@
                 android:cropToPadding="true"
                 android:src="@drawable/lockicon"/>
             <EditText
+                android:id="@+id/password_register"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingLeft="10dp"
                 android:hint="@string/mot_de_passe"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_weight="12"
             android:layout_width="match_parent"
@@ -143,6 +149,7 @@
         </LinearLayout>
 
     <Button
+        android:id="@+id/button_register"
         android:layout_weight="7"
         android:layout_gravity="center"
         android:textColor="@color/white"
