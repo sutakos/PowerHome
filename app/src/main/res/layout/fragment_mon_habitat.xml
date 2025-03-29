@@ -13,6 +13,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
+    <Button
+        android:id="@+id/button_reserver"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:layout_gravity="center"
+        android:text="Réserver"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_reserver"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
