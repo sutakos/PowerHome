@@ -76,7 +76,7 @@
                 android:layout_height="match_parent"
                 android:backgroundTint="@android:color/darker_gray"
                 android:hint="@string/email"
-                android:paddingLeft="60dp"
+                android:paddingLeft="10dp"
                 android:textColorHint="@android:color/darker_gray" />
         </LinearLayout>
 
@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColorHint="@android:color/darker_gray"
-                android:paddingLeft="60dp"
+                android:paddingLeft="10dp"
                 android:hint="@string/mot_de_passe" />
         </LinearLayout>
 
@@ -179,6 +179,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
                 android:text="@string/nouveau_sur_powerhome"/>
         <TextView
             android:layout_width="wrap_content"
@@ -186,7 +187,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textColor="@android:color/holo_blue_dark"
-            android:paddingBottom="30dp"
+            android:layout_marginBottom="40dp"
             android:textSize="20dp"
             android:text="@string/cr_un_compte" />
 

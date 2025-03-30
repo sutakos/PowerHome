@@ -38,5 +38,9 @@
         tools:ignore="MissingConstraints"
         android:textColor="@color/white"/>
 
+    <ImageView
+    android:layout_width="141dp"
+    android:layout_height="match_parent"
+    android:src="@drawable/forme" />
 
 </LinearLayout>
