@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 import iut.dam.powerhome.R;
-import iut.dam.powerhome.adapters.TimeSlotAdapter;
+import iut.dam.powerhome.TimeSlotAdapter;
 import iut.dam.powerhome.entities.Appliance;
 import iut.dam.powerhome.entities.TimeSlot;
 
@@ -52,7 +52,7 @@ public class MonHabitatFragment extends Fragment {
         if (getArguments() != null) {
             userAppliances = getArguments().getParcelableArrayList("appliances");
         }
-
+        calculateTotalConsumption();
         // Initialisation de l'adaptateur
         timeSlotAdapter = new TimeSlotAdapter(getContext(), userAppliances);
         timeSlotsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -63,33 +63,31 @@ public class MonHabitatFragment extends Fragment {
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, month, dayOfMonth);
             selectedDate = calendar.getTime();
-            updateTimeSlots();
+            updateCalendar();
+            setupTimeSlots();
+            updateTimeSlotsForSelectedDate();
+
         });
 
         // Initialisation avec la date actuelle
         selectedDate = new Date();
         calendarView.setDate(selectedDate.getTime());
-        updateTimeSlots();
+        updateCalendar();
+        setupTimeSlots();
+        updateTimeSlotsForSelectedDate();
 
         return view;
     }
 
-    private void updateTimeSlots() {
-        if (timeSlotAdapter != null && selectedDate != null) {
-            timeSlotAdapter.setSelectedDate(selectedDate);
-        }
-    }
+
 
     private void calculateTotalConsumption() {
         int totalWatt = 0;
-        if (getArguments() != null) {
-            userAppliances = getArguments().getParcelableArrayList("appliances");
             if (userAppliances != null) {
                 for (Appliance app : userAppliances) {
                     totalWatt += app.getWattage();
                 }
             }
-        }
         nbTotalWattage.setText(String.format(Locale.getDefault(), "%dW", totalWatt));
     }
 

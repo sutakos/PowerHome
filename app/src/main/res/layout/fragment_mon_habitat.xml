@@ -17,21 +17,22 @@
         android:id="@+id/nbTotalWattage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="36sp"
+        android:textSize="25sp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp"/>
 
+    <!-- CalendarView avec poids et hauteur ajustables -->
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="16dp" />
 
+    <!-- RecyclerView avec hauteur fixe raisonnable -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/timeSlotsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:minHeight="200dp"/>
-
+        android:layout_height="300dp"
+        android:layout_marginTop="8dp"/>
 </LinearLayout>
