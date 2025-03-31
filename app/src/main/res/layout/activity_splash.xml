@@ -25,18 +25,16 @@
         <View
             android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/lines_splash"
-            android:rotation="-15" />
+            android:layout_marginTop="200dp"
+            android:background="@drawable/dot_splash"
+            android:rotation="-90" />
 
         <View
-            android:layout_width="50dp"
+            android:layout_width="100dp"
             android:layout_height="50dp"
-            android:background="@drawable/dot_splash"
-            android:layout_marginTop="200dp"
-            android:layout_marginStart="30dp"
-            android:rotation="-90" />
+            android:layout_marginTop="100dp"
+            android:background="@drawable/lines_splash"
+            android:rotation="-50" />
 
         <ImageView
             android:layout_width="300dp"
