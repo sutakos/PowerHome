@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="welcome_on">Welcome on</string>
+    <string name="our_home_our_energy">Our Home, Our Energy</string>
+    <string name="consommation_totale">Your total wattage</string>
+    <string name="etage">floor</string>
 </resources>

@@ -87,7 +87,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
     }
 
     private void fetchReservationsForDate(Date date) {
-        String url = "http://10.0.2.2/powerhome_server/getReservationsByDate.php";
+        String url = "http://192.168.1.19/powerhome_server/getReservationsByDate.php";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.FRENCH);
 
         // Clear existing bookings
@@ -341,7 +341,7 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
     }
 
     private void sendReservationToServer(TimeSlot timeSlot, List<Appliance> appliances) {
-        String url = "http://10.0.2.2/powerhome_server/addReservation.php";
+        String url = "http://192.168.1.19/powerhome_server/addReservation.php";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.FRENCH);
 
         JSONArray appliancesArray = new JSONArray();

@@ -14,16 +14,9 @@
     <string name="nom">Apellido</string>
     <string name="pr_nom">Nombre</string>
     <string name="mobile">Móvil</string>
-    <string name="habitats">Hábitats</string>
     <string name="gaetan_leclair_toodo_com">gaetan_leclair_toodo_com</string>
     <string name="votre_consommation">Su consumo</string>
     <string name="welcome_on">Welcome on</string>
-    <string name="se_deconnecter">Desconectar</string>
-    <string name="settings">Ajustes</string>
-    <string name="mes_requetes">Mis peticiones</string>
-    <string name="mon_habitat">Mi hábitat</string>
-    <string name="developped_by_lucas_l_rita_h_and_lucie_p">Desarrollado por Lucas L, Rita H and Lucie P</string>
-    <string name="consommation_totale">Consumo total :</string>
-    <string name="equipments">Equipo</string>
-    <string name="etage">PISO</string>
+    <string name="consommation_totale">Your total wattage</string>
+    <string name="etage">floor</string>
 </resources>

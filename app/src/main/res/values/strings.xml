@@ -56,22 +56,21 @@
     <string name="nom">Last Name</string>
     <string name="pr_nom">First Name</string>
     <string name="mobile">Phone</string>
-    <string name="first_item" translatable="false">Habitat</string>
-    <string name="second_item" translatable="false">Second_item</string>
-    <string name="open" translatable="false">Open</string>
-    <string name="close" translatable="false">Close</string>
+    <string name="first_item">Habitat</string>
+    <string name="second_item">Second_item</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="se_deconnecter">Disconnect</string>
-    <string name="settings">Settings</string>
-    <string name="mes_requetes">"My request"</string>
-    <string name="mon_habitat">My habitat\n</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="se_deconnecter">Se déconnecter</string>
+    <string name="settings">Paramètres</string>
+    <string name="mes_requetes">Mes requêtes\n</string>
+    <string name="mon_habitat">Mon habitat\n</string>
     <string name="habitats">Habitats</string>
     <string name="gaetan_leclair_toodo_com">gaetan_leclair_toodo_com</string>
     <string name="votre_consommation">Your total wattage</string>
     <string name="welcome_on">Welcome on</string>
-    <string name="developped_by_lucas_l_rita_h_and_lucie_p">Developped by Lucas L, Rita H and Lucie P</string>
-    <string name="consommation_totale">Total wattage :</string>
+    <string name="consommation_totale">Your total wattage</string>
     <string name="equipments">equipments</string>
-    <string name="etage">FLOOR</string>
+    <string name="etage">floor</string>
 </resources>

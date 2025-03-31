@@ -3,4 +3,7 @@
     <string name="gaetan_leclair_toodo_com">gaetan_leclair_toodo_com</string>
     <string name="votre_consommation">Votre consommation</string>
     <string name="welcome_on">Welcome on</string>
+    <string name="our_home_our_energy">Our Home, Our Energy</string>
+    <string name="consommation_totale">Your total wattage</string>
+    <string name="etage">floor</string>
 </resources>
