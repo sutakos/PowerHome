@@ -18,4 +18,13 @@ public class Booking {
         this.order = order;
         this.bookedAt = bookedAt;
     }
+
+    public Booking(Appliance appliance, TimeSlot slot) {
+        this.appliance = appliance;
+        this.timeSlot=slot;
+    }
+
+    public Appliance getAppliance() {
+        return appliance;
+    }
 }

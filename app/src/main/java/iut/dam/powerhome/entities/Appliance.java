@@ -69,4 +69,12 @@ public class Appliance implements Parcelable {
     public String getName() {
         return name;
     }
+
+    public int getWattage() {
+        return wattage;
+    }
+
+    public int getId() {
+        return id;
+    }
 }

@@ -1,42 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_gravity="bottom"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <CalendarView
-        android:id="@+id/calendrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-
-    <Button
-        android:id="@+id/button_reserver"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:layout_gravity="center"
-        android:text="Réserver"
-        android:textColor="@color/white"
-        android:background="@drawable/bg_reserver"/>
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
+        android:id="@+id/consumptionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/votre_consommation"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:textSize="25sp"/>
+        android:text="Consommation totale :"
+        android:textSize="18sp"
+        android:layout_gravity="center_horizontal"/>
 
     <TextView
         android:id="@+id/nbTotalWattage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:textSize="80sp"/>
+        android:text="0W"
+        android:textSize="36sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"/>
 
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/selectedDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aucune date sélectionnée"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/timeSlotsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:padding="4dp"/>
+
+    <Button
+        android:id="@+id/reserveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Réserver"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:enabled="false"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"/>
 </LinearLayout>
