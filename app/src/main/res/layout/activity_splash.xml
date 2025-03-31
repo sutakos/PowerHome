@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green"
+    android:background="@drawable/gradient_background"
     android:gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -65,8 +65,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Developped by Lucas L, Rita H and Lucie P"
-        android:textColor="@color/white"
+        android:text="@string/developped_by_lucas_l_rita_h_and_lucie_p"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:layout_marginTop="20dp" />
 

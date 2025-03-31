@@ -47,7 +47,7 @@
                 <TextView
                     android:layout_weight="50"
                     android:layout_width="0dp"
-                    android:text=" équipements"
+                    android:text="@string/equipments"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@android:color/darker_gray"/>
@@ -92,7 +92,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ETAGE"
+            android:text="@string/etage"
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:paddingHorizontal="8dp"

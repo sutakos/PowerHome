@@ -6,7 +6,7 @@
         android:color="@android:color/holo_orange_dark"
         />
     <gradient
-        android:startColor="@android:color/holo_orange_dark"
-        android:endColor="@android:color/holo_orange_dark"
+        android:startColor="@color/vert"
+        android:endColor="@color/vert"
         />
 </shape>
