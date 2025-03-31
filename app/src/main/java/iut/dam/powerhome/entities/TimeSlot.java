@@ -7,17 +7,24 @@ import java.util.List;
 import java.util.Locale;
 
 public class TimeSlot {
+
+    private String slotKey;
     private int id;
     private Date begin;
     private Date end;
     private int maxWattage;
     private List<Booking> bookings = new ArrayList<>();
 
-    public TimeSlot(int id, Date begin, Date end, int maxWattage) {
-        this.id = id;
+    public TimeSlot(Date begin, Date end, int maxWattage) {
         this.begin = begin;
         this.end = end;
         this.maxWattage = maxWattage;
+        this.slotKey = generateSlotKey(begin, end);
+    }
+
+    private String generateSlotKey(Date start, Date end) {
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd-HHmm", Locale.FRENCH);
+        return fmt.format(start) + "_" + fmt.format(end);
     }
 
     public String getFormattedTime() {
@@ -49,4 +56,8 @@ public class TimeSlot {
     public int getMaxWattage() { return maxWattage; }
     public List<Booking> getBookings() { return bookings; }
     public void setBookings(List<Booking> bookings) { this.bookings = bookings; }
+
+    public String getSlotKey() {
+        return slotKey;
+    }
 }

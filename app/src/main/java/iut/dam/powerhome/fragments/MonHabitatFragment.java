@@ -1,5 +1,6 @@
 package iut.dam.powerhome.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,13 +33,10 @@ public class MonHabitatFragment extends Fragment {
 
     private CalendarView calendarView;
     private RecyclerView timeSlotsRecyclerView;
-    private TextView nbTotalWattage, selectedDateText;
-    private Button reserveButton;
+    private TextView nbTotalWattage;
     private TimeSlotAdapter timeSlotAdapter;
-    private List<TimeSlot> timeSlots = new ArrayList<>();
-    private TimeSlot selectedTimeSlot;
     private Date selectedDate;
-    private List<Appliance> appliances;
+    private List<Appliance> userAppliances = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,43 +44,94 @@ public class MonHabitatFragment extends Fragment {
 
         // Initialisation des vues
         calendarView = view.findViewById(R.id.calendarView);
-        timeSlotsRecyclerView = view.findViewById(R.id.timeSlotsRecyclerView);
         nbTotalWattage = view.findViewById(R.id.nbTotalWattage);
-        selectedDateText = view.findViewById(R.id.selectedDateText);
-        reserveButton = view.findViewById(R.id.reserveButton);
+        timeSlotsRecyclerView = view.findViewById(R.id.timeSlotsRecyclerView);
+        timeSlotsRecyclerView.setVisibility(View.VISIBLE); // Rend visible dès le départ
 
-        // Configuration du RecyclerView
-        timeSlotAdapter = new TimeSlotAdapter(getContext(), timeSlot -> {
-            // Gérer le clic sur un créneau
-            selectedTimeSlot = timeSlot;
-        });
+        // Récupération des appareils
+        if (getArguments() != null) {
+            userAppliances = getArguments().getParcelableArrayList("appliances");
+        }
+
+        // Initialisation de l'adaptateur
+        timeSlotAdapter = new TimeSlotAdapter(getContext(), userAppliances);
         timeSlotsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         timeSlotsRecyclerView.setAdapter(timeSlotAdapter);
 
-        // Calcul de la consommation totale
-        calculateTotalConsumption();
-
-        // Gestion du calendrier
+        // Configuration du calendrier
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, month, dayOfMonth);
             selectedDate = calendar.getTime();
-            updateSelectedDateText();
-            loadTimeSlotsForDate(selectedDate);
+            updateTimeSlots();
         });
 
-        // Bouton de réservation
-        reserveButton.setOnClickListener(v -> reserveTimeSlot());
+        // Initialisation avec la date actuelle
+        selectedDate = new Date();
+        calendarView.setDate(selectedDate.getTime());
+        updateTimeSlots();
 
         return view;
+    }
+
+    private void updateTimeSlots() {
+        if (timeSlotAdapter != null && selectedDate != null) {
+            timeSlotAdapter.setSelectedDate(selectedDate);
+        }
     }
 
     private void calculateTotalConsumption() {
         int totalWatt = 0;
         if (getArguments() != null) {
-            appliances = getArguments().getParcelableArrayList("appliances");
-            if (appliances != null) {
-                for (Appliance app : appliances) {
+            userAppliances = getArguments().getParcelableArrayList("appliances");
+            if (userAppliances != null) {
+                for (Appliance app : userAppliances) {
+                    totalWatt += app.getWattage();
+                }
+            }
+        }
+        nbTotalWattage.setText(String.format(Locale.getDefault(), "%dW", totalWatt));
+    }
+
+    private void updateTimeSlotsForSelectedDate() {
+        if (timeSlotAdapter != null && selectedDate != null) {
+            timeSlotAdapter.setSelectedDate(selectedDate);
+            timeSlotsRecyclerView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setupTimeSlots() {
+        timeSlotAdapter = new TimeSlotAdapter(getContext(), userAppliances); // Passer la liste des appareils
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        timeSlotsRecyclerView.setLayoutManager(layoutManager);
+        timeSlotsRecyclerView.setAdapter(timeSlotAdapter);
+        timeSlotsRecyclerView.setVisibility(View.GONE);
+    }
+
+    private void updateCalendar() {
+        timeSlotsRecyclerView.setVisibility(View.GONE);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+    private void calculateTotalConsumption() {
+        int totalWatt = 0;
+        if (getArguments() != null) {
+            userAppliances = getArguments().getParcelableArrayList("appliances");
+            if (userAppliances != null) {
+                for (Appliance app : userAppliances) {
                     totalWatt += app.getWattage();
                 }
             }
@@ -95,45 +146,49 @@ public class MonHabitatFragment extends Fragment {
         }
     }
 
-    private void loadTimeSlotsForDate(Date date) {
-        // Simulation de chargement de créneaux
-        List<TimeSlot> slots = new ArrayList<>();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
+    private void showApplianceSelectionDialog() {
+        if (selectedTimeSlot == null || appliances == null) return;
 
-        // Génération de créneaux factices (remplacer par appel API)
-        for (int i = 0; i < 6; i++) {
-            cal.set(Calendar.HOUR_OF_DAY, 8 + (i * 2));
-            cal.set(Calendar.MINUTE, 0);
-            Date start = cal.getTime();
+        boolean[] checkedItems = new boolean[appliances.size()];
+        List<Appliance> selectedAppliances = new ArrayList<>();
+        String[] applianceNames = new String[appliances.size()];
 
-            cal.set(Calendar.HOUR_OF_DAY, 10 + (i * 2));
-            Date end = cal.getTime();
-
-            slots.add(new TimeSlot(i, start, end, 2000));
+        for (int i = 0; i < appliances.size(); i++) {
+            applianceNames[i] = appliances.get(i).getName() + " (" + appliances.get(i).getWattage() + "W)";
         }
 
-        timeSlotsRecyclerView.setVisibility(View.VISIBLE);
-        timeSlotAdapter.updateTimeSlots(slots);
+        new AlertDialog.Builder(getContext())
+                .setTitle("Sélectionnez les appareils")
+                .setMultiChoiceItems(applianceNames, checkedItems, (dialog, which, isChecked) -> {
+                    if (isChecked) {
+                        selectedAppliances.add(appliances.get(which));
+                    } else {
+                        selectedAppliances.remove(appliances.get(which));
+                    }
+                })
+                .setPositiveButton("Confirmer", (dialog, which) -> {
+                    if (!selectedAppliances.isEmpty()) {
+                        timeSlotAdapter.makeReservation(selectedTimeSlot, selectedAppliances);
+                    } else {
+                        Toast.makeText(getContext(), "Veuillez sélectionner au moins un appareil", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Annuler", null)
+                .show();
     }
 
-    private void onTimeSlotSelected(TimeSlot timeSlot) {
-        selectedTimeSlot = timeSlot;
+    @Override
+    public void onTimeSlotSelected(TimeSlot timeSlot) {
+        this.selectedTimeSlot = timeSlot;
         reserveButton.setEnabled(true);
         Toast.makeText(getContext(), "Créneau sélectionné: " + timeSlot.getFormattedTime(), Toast.LENGTH_SHORT).show();
     }
 
-    private void reserveTimeSlot() {
-        if (selectedTimeSlot != null && selectedDate != null) {
-            // Implémenter la logique de réservation ici
-            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.FRENCH);
-            String message = String.format(Locale.FRENCH,
-                    "Réservation confirmée pour %s - %s",
-                    timeFormat.format(selectedTimeSlot.getBegin()),
-                    timeFormat.format(selectedTimeSlot.getEnd()));
-
-            Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
-            reserveButton.setEnabled(false);
-        }
+    @Override
+    public void onReservationConfirmed() {
+        reserveButton.setEnabled(false);
+        selectedTimeSlot = null;
     }
+    */
+
 }

@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Objects;
 
 import iut.dam.powerhome.entities.Habitat;
 
@@ -25,38 +24,81 @@ public class HabitatAdapter extends ArrayAdapter<Habitat> {
         this.items = items;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
 
-        View layout = convertView;
-        if (convertView == null){
+        if (convertView == null) {
+            // Création d'une nouvelle vue
             LayoutInflater inflater = activity.getLayoutInflater();
-            layout = inflater.inflate(itemResourceId, parent, false);
+            convertView = inflater.inflate(itemResourceId, parent, false);
+
+            holder = new ViewHolder();
+            holder.residentName = convertView.findViewById(R.id.residentName);
+            holder.icone1 = convertView.findViewById(R.id.icone1);
+            holder.icone2 = convertView.findViewById(R.id.icone2);
+            holder.icone3 = convertView.findViewById(R.id.icone3);
+            holder.icone4 = convertView.findViewById(R.id.icone4);
+            holder.etage = convertView.findViewById(R.id.nbEtage);
+            holder.nbEquip = convertView.findViewById(R.id.nbEquipements);
+
+            convertView.setTag(holder);
+        } else {
+            // Réutilisation de la vue existante
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        TextView residentName = (TextView) layout.findViewById(R.id.residentName);
-        ImageView icone1 = (ImageView) layout.findViewById(R.id.icone1);
-        ImageView icone2 = (ImageView) layout.findViewById(R.id.icone2);
-        ImageView icone3 = (ImageView) layout.findViewById(R.id.icone3);
-        ImageView icone4 = (ImageView) layout.findViewById(R.id.icone4);
-        ImageView[] icon = new ImageView[]{icone1,icone2,icone3,icone4};
+        // Réinitialisation des icônes
+        holder.icone1.setImageResource(0); // ou android.R.color.transparent
+        holder.icone2.setImageResource(0);
+        holder.icone3.setImageResource(0);
+        holder.icone4.setImageResource(0);
 
-        TextView etage = (TextView) layout.findViewById(R.id.nbEtage);
-        TextView nbEquip = (TextView) layout.findViewById(R.id.nbEquipements);
+        // Remplissage des données
+        Habitat habitat = items.get(position);
+        holder.residentName.setText(habitat.getResidentName());
+        holder.etage.setText(String.valueOf(habitat.getFloor()));
+        holder.nbEquip.setText(String.valueOf(habitat.nbEquipement()));
 
-        residentName.setText(items.get(position).getResidentName());
-        etage.setText(String.valueOf(items.get(position).getFloor()));
-        nbEquip.setText(String.valueOf(items.get(position).nbEquipement()));
+        // Affichage des appareils
+        for (int i = 0; i < habitat.getAppliances().size() && i < 4; i++) {
+            String applianceName = habitat.getOneAppliance(i).getName();
+            ImageView currentIcon = getIconView(holder, i);
 
-        for(int i=0;i<items.get(position).getAppliances().size();i++){
-            if(Objects.equals(items.get(position).getOneAppliance(i).getName(), "Machine a laver"))
-                icon[i].setImageResource(R.drawable.ic_machine_a_laver);
-            if(Objects.equals(items.get(position).getOneAppliance(i).getName(), "Aspirateur"))
-                icon[i].setImageResource(R.drawable.ic_aspirateur);
-            if(Objects.equals(items.get(position).getOneAppliance(i).getName(), "Climatiseur"))
-                icon[i].setImageResource(R.drawable.ic_climatiseur);
-            if(Objects.equals(items.get(position).getOneAppliance(i).getName(), "Fer a repasser"))
-                icon[i].setImageResource(R.drawable.ic_fer_a_repasser);
+            switch (applianceName) {
+                case "Machine a laver":
+                    currentIcon.setImageResource(R.drawable.ic_machine_a_laver);
+                    break;
+                case "Aspirateur":
+                    currentIcon.setImageResource(R.drawable.ic_aspirateur);
+                    break;
+                case "Climatiseur":
+                    currentIcon.setImageResource(R.drawable.ic_climatiseur);
+                    break;
+                case "Fer a repasser":
+                    currentIcon.setImageResource(R.drawable.ic_fer_a_repasser);
+                    break;
+            }
         }
-        return layout;
+
+        return convertView;
+    }
+
+    // Classe ViewHolder pour le pattern d'optimisation
+    private static class ViewHolder {
+        TextView residentName;
+        ImageView icone1, icone2, icone3, icone4;
+        TextView etage;
+        TextView nbEquip;
+    }
+
+    // Méthode utilitaire pour obtenir la bonne ImageView
+    private ImageView getIconView(ViewHolder holder, int index) {
+        switch (index) {
+            case 0: return holder.icone1;
+            case 1: return holder.icone2;
+            case 2: return holder.icone3;
+            case 3: return holder.icone4;
+            default: return null;
+        }
     }
 }
