@@ -28,7 +28,7 @@ import iut.dam.powerhome.R;
 
 
 public class HabitatsFragment extends Fragment {
-    String urlString = "http://192.168.1.30/powerhome_server/getHabitats.php";
+    String urlString = "http://10.0.2.2/powerhome_server/getHabitats.php";
     List<Habitat> habitats = new ArrayList<>();
     ProgressDialog pDialog;
     HabitatAdapter adapter;

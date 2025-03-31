@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 import iut.dam.powerhome.R;
-import iut.dam.powerhome.TimeSlotAdapter;
+import iut.dam.powerhome.adapters.TimeSlotAdapter;
 import iut.dam.powerhome.entities.Appliance;
 import iut.dam.powerhome.entities.TimeSlot;
 
@@ -41,7 +41,7 @@ public class MonHabitatFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mon_habitat, container, false);
-        getActivity().setTitle("Mon habitat");
+
         // Initialisation des vues
         calendarView = view.findViewById(R.id.calendarView);
         timeSlotsRecyclerView = view.findViewById(R.id.timeSlotsRecyclerView);
@@ -50,7 +50,10 @@ public class MonHabitatFragment extends Fragment {
         reserveButton = view.findViewById(R.id.reserveButton);
 
         // Configuration du RecyclerView
-        timeSlotAdapter = new TimeSlotAdapter(getContext(),appliances);
+        timeSlotAdapter = new TimeSlotAdapter(getContext(), timeSlot -> {
+            // Gérer le clic sur un créneau
+            selectedTimeSlot = timeSlot;
+        });
         timeSlotsRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         timeSlotsRecyclerView.setAdapter(timeSlotAdapter);
 
@@ -107,10 +110,11 @@ public class MonHabitatFragment extends Fragment {
             cal.set(Calendar.HOUR_OF_DAY, 10 + (i * 2));
             Date end = cal.getTime();
 
-            slots.add(new TimeSlot(start, end, 2000));
+            slots.add(new TimeSlot(i, start, end, 2000));
         }
 
         timeSlotsRecyclerView.setVisibility(View.VISIBLE);
+        timeSlotAdapter.updateTimeSlots(slots);
     }
 
     private void onTimeSlotSelected(TimeSlot timeSlot) {

@@ -1,8 +1,7 @@
-package iut.dam.powerhome;
+package iut.dam.powerhome.adapters;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -17,15 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.koushikdutta.ion.Response;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,206 +28,125 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import iut.dam.powerhome.R;
 import iut.dam.powerhome.entities.Appliance;
 import iut.dam.powerhome.entities.Booking;
 import iut.dam.powerhome.entities.TimeSlot;
-import iut.dam.powerhome.R;
 
 public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder> {
+
+    public interface OnTimeSlotClickListener {
+        void onTimeSlotClick(TimeSlot timeSlot);
+    }
+
+    private static final String BASE_URL = "http://192.168.1.19/powerhome_server/";
+
     private Context context;
-    private List<TimeSlot> timeSlots = new ArrayList<>();
+    private List<TimeSlot> timeSlots;
+    private OnTimeSlotClickListener listener;
+    private SharedPreferences sharedPreferences;
     private Date selectedDate;
     private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.FRENCH);
-    private SharedPreferences sharedPreferences;
-    private List<Appliance> userAppliances;
+    private SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.FRENCH);
 
-    public TimeSlotAdapter(Context context, List<Appliance> userAppliances) {
+    public TimeSlotAdapter(Context context, OnTimeSlotClickListener listener) {
         this.context = context;
-        this.userAppliances = userAppliances;
+        this.timeSlots = new ArrayList<>();
+        this.listener = listener;
         this.sharedPreferences = context.getSharedPreferences("TimeSlotPrefs", Context.MODE_PRIVATE);
-        initTimeSlots();
-    }
-
-    private void initTimeSlots() {
-        if (selectedDate == null) return;
-
-        try {
-            timeSlots.clear();
-
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(selectedDate);
-
-            // génère les créneaux
-            for (int i = 0; i < 12; i++) {
-                Calendar startCal = (Calendar) cal.clone();
-                startCal.set(Calendar.HOUR_OF_DAY, i * 2);
-                startCal.set(Calendar.MINUTE, 0);
-                Date start = startCal.getTime();
-
-                Calendar endCal = (Calendar) cal.clone();
-                endCal.set(Calendar.HOUR_OF_DAY, i * 2 + 2);
-                endCal.set(Calendar.MINUTE, 0);
-                Date end = endCal.getTime();
-
-                timeSlots.add(new TimeSlot(start, end, 250));
-            }
-
-            // charge les réservations déjà faites
-            loadReservations();
-
-            fetchReservationsForDate(selectedDate);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    private void loadReservations() {
-        if (selectedDate == null) return;
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.FRENCH);
-        String dateKey = dateFormat.format(selectedDate);
-        String reservationsJson = sharedPreferences.getString(dateKey, null);
-
-        if (reservationsJson != null) {
-            try {
-                JSONObject reservationsData = new JSONObject(reservationsJson);
-                JSONArray slotsArray = reservationsData.getJSONArray("slots");
-
-                for (int i = 0; i < slotsArray.length(); i++) {
-                    JSONObject slotJson = slotsArray.getJSONObject(i);
-                    String slotKey = slotJson.getString("slot_key");
-
-                    for (TimeSlot slot : timeSlots) {
-                        if (slot.getSlotKey().equals(slotKey)) {
-                            JSONArray bookingsArray = slotJson.getJSONArray("bookings");
-                            List<Booking> bookings = new ArrayList<>();
-
-                            for (int j = 0; j < bookingsArray.length(); j++) {
-                                JSONObject bookingJson = bookingsArray.getJSONObject(j);
-                                int applianceId = bookingJson.getInt("appliance_id");
-                                Appliance appliance = findApplianceById(applianceId);
-
-                                if (appliance != null) {
-                                    Booking booking = new Booking();
-                                    booking.appliance = appliance;
-                                    booking.timeSlot = slot;
-                                    bookings.add(booking);
-                                }
-                            }
-
-                            slot.setBookings(bookings);
-                            break;
-                        }
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    private Appliance findApplianceById(int id) {
-        for (Appliance appliance : userAppliances) {
-            if (appliance.getId() == id) {
-                return appliance;
-            }
-        }
-        return null;
     }
 
     public void setSelectedDate(Date date) {
         this.selectedDate = date;
-        initTimeSlots();
-        notifyDataSetChanged();
+        fetchTimeSlotsForDate(date);
     }
-    private void saveReservations() {
-        if (selectedDate == null || timeSlots.isEmpty()) return;
 
+    private void fetchTimeSlotsForDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.FRENCH);
-        String dateKey = dateFormat.format(selectedDate);
+        String formattedDate = dateFormat.format(date);
 
-        JSONObject reservationsData = new JSONObject();
-        try {
-            JSONArray slotsArray = new JSONArray();
+        Ion.with(context)
+                .load(BASE_URL + "getTimeSlots.php")
+                .setBodyParameter("date", formattedDate)
+                .asJsonObject()
+                .setCallback((e, result) -> {
+                    if (e != null) {
+                        showError("Erreur réseau: " + e.getMessage());
+                        return;
+                    }
 
-            for (TimeSlot slot : timeSlots) {
-                JSONObject slotJson = new JSONObject();
-                slotJson.put("slot_key", slot.getSlotKey());
+                    try {
+                        if (result.get("status").getAsString().equals("success")) {
+                            List<TimeSlot> slots = new ArrayList<>();
+                            JsonArray slotsArray = result.get("time_slots").getAsJsonArray();
 
-                JSONArray bookingsArray = new JSONArray();
-                for (Booking booking : slot.getBookings()) {
-                    JSONObject bookingJson = new JSONObject();
-                    bookingJson.put("appliance_id", booking.appliance.getId());
-                    bookingsArray.put(bookingJson);
-                }
+                            for (int i = 0; i < slotsArray.size(); i++) {
+                                JsonObject slotJson = slotsArray.get(i).getAsJsonObject();
 
-                slotJson.put("bookings", bookingsArray);
-                slotsArray.put(slotJson);
-            }
+                                TimeSlot slot = new TimeSlot(
+                                        slotJson.get("id").getAsInt(),
+                                        dbDateFormat.parse(slotJson.get("begin").getAsString()),
+                                        dbDateFormat.parse(slotJson.get("end").getAsString()),
+                                        slotJson.get("max_wattage").getAsInt()
+                                );
+                                slots.add(slot);
+                            }
 
-            reservationsData.put("slots", slotsArray);
-            sharedPreferences.edit()
-                    .putString(dateKey, reservationsData.toString())
-                    .apply();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+                            this.timeSlots = slots;
+                            fetchReservationsForDate(date);
+                        } else {
+                            showError(result.get("message").getAsString());
+                        }
+                    } catch (Exception ex) {
+                        showError("Erreur de traitement des données");
+                        Log.e("TimeSlotAdapter", "Parsing error", ex);
+                    }
+                });
     }
 
     private void fetchReservationsForDate(Date date) {
-        String url = "http://192.168.1.19/ecopower/getReservationsByDate.php";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.FRENCH);
 
         Ion.with(context)
-                .load(url)
+                .load(BASE_URL + "getReservationsByDate.php")
                 .setBodyParameter("date", dateFormat.format(date))
-                .asString()
-                .setCallback(new FutureCallback<String>() {
-                    @Override
-                    public void onCompleted(Exception e, String result) {
-                        if (e != null) {
-                            Toast.makeText(context, "Erreur réseau", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                .asJsonObject()
+                .setCallback((e, result) -> {
+                    if (e != null) {
+                        Log.e("TimeSlotAdapter", "Network error", e);
+                        return;
+                    }
 
-                        try {
-                            JSONObject jsonResponse = new JSONObject(result);
-                            if (jsonResponse.getString("status").equals("success")) {
-                                JSONArray reservations = jsonResponse.getJSONArray("reservations");
+                    try {
+                        if (result.get("status").getAsString().equals("success")) {
+                            JsonArray reservations = result.get("reservations").getAsJsonArray();
+
+                            for (TimeSlot slot : timeSlots) {
+                                slot.getBookings().clear();
+                            }
+
+                            for (int i = 0; i < reservations.size(); i++) {
+                                JsonObject res = reservations.get(i).getAsJsonObject();
+                                int slotId = res.get("time_slot_id").getAsInt();
 
                                 for (TimeSlot slot : timeSlots) {
-                                    slot.getBookings().clear();
-                                }
-
-                                for (int i = 0; i < reservations.length(); i++) {
-                                    JSONObject res = reservations.getJSONObject(i);
-                                    String slotKey = res.getString("slot_key"); // Modifié ici
-
-                                    for (TimeSlot slot : timeSlots) {
-                                        if (slot.getSlotKey().equals(slotKey)) {
-                                            Appliance appliance = new Appliance(
-                                                    res.getJSONObject("appliance").getInt("id"),
-                                                    res.getJSONObject("appliance").getString("name"),
-                                                    res.getJSONObject("appliance").getString("reference"),
-                                                    res.getJSONObject("appliance").getInt("wattage")
-                                            );
-
-                                            Booking booking = new Booking();
-                                            booking.appliance = appliance;
-                                            booking.timeSlot = slot;
-                                            slot.getBookings().add(booking);
-                                            break;
-                                        }
+                                    if (slot.getId() == slotId) {
+                                        JsonObject applianceJson = res.get("appliance").getAsJsonObject();
+                                        Appliance appliance = new Appliance(
+                                                applianceJson.get("id").getAsInt(),
+                                                applianceJson.get("name").getAsString(),
+                                                applianceJson.get("reference").getAsString(),
+                                                applianceJson.get("wattage").getAsInt()
+                                        );
+                                        slot.getBookings().add(new Booking(appliance, slot));
+                                        break;
                                     }
                                 }
-
-                                ((Activity) context).runOnUiThread(() -> {
-                                    notifyDataSetChanged();
-                                    Log.d("SYNC", "Données synchronisées avec le serveur");
-                                });
                             }
-                        } catch (JSONException ex) {
-                            Log.e("SYNC", "Erreur parsing: " + ex.getMessage());
-                            Toast.makeText(context, "Erreur de données", Toast.LENGTH_SHORT).show();
+                            notifyDataSetChanged();
                         }
+                    } catch (Exception ex) {
+                        Log.e("TimeSlotAdapter", "Reservation parsing error", ex);
                     }
                 });
     }
@@ -247,159 +161,132 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
     @Override
     public void onBindViewHolder(@NonNull TimeSlotViewHolder holder, int position) {
         TimeSlot timeSlot = timeSlots.get(position);
-        String timeText = timeFormat.format(timeSlot.getBegin()) + " - " + timeFormat.format(timeSlot.getEnd())
-                + "\n" + timeSlot.getUsedWattage() + "/" + timeSlot.getMaxWattage() + "W";
-        holder.timeSlotButton.setText(timeText);
 
-        double usagePercentage = timeSlot.getUsagePercentage();
-        int colorResId;
+        String buttonText = String.format(Locale.getDefault(),
+                "%s\n%d/%dW",
+                timeSlot.getFormattedTime(),
+                timeSlot.getUsedWattage(),
+                timeSlot.getMaxWattage());
 
-        if (usagePercentage >= 100) {
-            colorResId = R.color.gris;
-            holder.timeSlotButton.setEnabled(false);
-        } else if (usagePercentage > 70) {
-            colorResId = R.color.red;
-            holder.timeSlotButton.setEnabled(true);
-        } else if (usagePercentage > 30) {
-            colorResId = R.color.orange;
-            holder.timeSlotButton.setEnabled(true);
-        } else {
-            colorResId = R.color.green;
-            holder.timeSlotButton.setEnabled(true);
-        }
+        holder.timeSlotButton.setText(buttonText);
 
+        int colorRes = getAvailabilityColor(timeSlot);
         holder.timeSlotButton.setBackgroundTintList(
-                ColorStateList.valueOf(ContextCompat.getColor(context, colorResId))
+                ColorStateList.valueOf(ContextCompat.getColor(context, colorRes))
         );
 
+        holder.timeSlotButton.setEnabled(timeSlot.getUsagePercentage() < 100);
         holder.timeSlotButton.setOnClickListener(v -> {
-            if (usagePercentage < 100) {
-                showReservationDialog(timeSlot,
-                        timeFormat.format(timeSlot.getBegin()) + " - " + timeFormat.format(timeSlot.getEnd()));
+            if (timeSlot.getUsagePercentage() < 100) {
+                if (listener != null) {
+                    listener.onTimeSlotClick(timeSlot);
+                } else {
+                    showReservationDialog(timeSlot);
+                }
             }
         });
     }
 
-    private void showReservationDialog(TimeSlot timeSlot, String timeText) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Confirmation de réservation");
+    private int getAvailabilityColor(TimeSlot timeSlot) {
+        double usagePercentage = timeSlot.getUsagePercentage();
+        if (usagePercentage >= 100) return R.color.red;
+        if (usagePercentage > 70) return R.color.orange;
+        return R.color.green;
+    }
 
-        String message = "Voulez-vous réserver le créneau " + timeText;
-        if (selectedDate != null) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH);
-            message += " le " + dateFormat.format(selectedDate);
+    private void showReservationDialog(TimeSlot timeSlot) {
+        new AlertDialog.Builder(context)
+                .setTitle("Confirmer la réservation")
+                .setMessage("Réserver le créneau " + timeSlot.getFormattedTime() + "?")
+                .setPositiveButton("Oui", (dialog, which) -> checkUserAndProceed(timeSlot))
+                .setNegativeButton("Non", null)
+                .show();
+    }
+
+    private void checkUserAndProceed(TimeSlot timeSlot) {
+        SharedPreferences prefs = context.getSharedPreferences("user_session", Context.MODE_PRIVATE);
+        String email = prefs.getString("email", null);
+        String password = prefs.getString("password", null);
+
+        if (email != null && password != null) {
+            fetchUserAppliances(timeSlot, email, password);
+        } else {
+            showError("Veuillez vous connecter");
         }
-        message += "?";
-
-        builder.setMessage(message);
-
-        builder.setPositiveButton("Oui", (dialog, which) -> {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("user_session", Context.MODE_PRIVATE);
-            String email = sharedPreferences.getString("email", null);
-            String password = sharedPreferences.getString("password", null);
-
-            if (email != null && password != null) {
-                fetchUserAppliances(timeSlot, email, password);
-            }
-        });
-
-        builder.setNegativeButton("Non", (dialog, which) -> {
-            dialog.dismiss();
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     private void fetchUserAppliances(TimeSlot timeSlot, String email, String password) {
-        String url = "http://192.168.1.19/ecopower/getUserAppliances.php";
-
         Ion.with(context)
-                .load(url)
-                .setBodyParameter("email", email.trim())
-                .setBodyParameter("password", password.trim())
-                .asString()
-                .setCallback(new FutureCallback<String>() {
-                    @Override
-                    public void onCompleted(Exception e, String result) {
-                        try {
-                            if (e != null || result == null) {
-                                throw new Exception(e != null ? e.getMessage() : "Réponse vide");
-                            }
+                .load(BASE_URL + "getUserAppliances.php")
+                .setBodyParameter("email", email)
+                .setBodyParameter("password", password)
+                .asJsonObject()
+                .setCallback((e, result) -> {
+                    if (e != null || result == null) {
+                        showError("Erreur de connexion");
+                        return;
+                    }
 
-                            JSONObject jsonResponse = new JSONObject(result);
-                            Log.d("API_RESPONSE", jsonResponse.toString(2));
-
-                            if (!jsonResponse.has("appliances")) {
-                                throw new Exception("Aucun appareil trouvé dans la réponse");
-                            }
-
-                            JSONArray appliancesArray = jsonResponse.getJSONArray("appliances");
-                            List<Appliance> applianceList = new ArrayList<>();
-
-                            if (appliancesArray.length() == 0) {
-                                Toast.makeText(context, "Aucun appareil disponible", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-
-                            for (int i = 0; i < appliancesArray.length(); i++) {
-                                JSONObject appliance = appliancesArray.getJSONObject(i);
-                                applianceList.add(new Appliance(
-                                        appliance.getInt("id"),
-                                        appliance.getString("name"),
-                                        appliance.getString("reference"),
-                                        appliance.getInt("wattage")
-                                ));
-                            }
-
-                            // si tout est ok, autre boite de dialogue pour choix d'appliances
-                            applianceSelectionDialog(timeSlot, applianceList);
-
-                        } catch (JSONException ex) {
-                            Log.e("JSON_ERROR", "Erreur parsing JSON: " + ex.getMessage());
-                            Toast.makeText(context, "Erreur de format de données: " + ex.getMessage(), Toast.LENGTH_LONG).show();
-                        } catch (Exception ex) {
-                            Log.e("API_ERROR", ex.getMessage());
-                            Toast.makeText(context, "Erreur: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+                    try {
+                        if (result.get("status").getAsString().equals("success")) {
+                            List<Appliance> appliances = parseAppliances(result.get("appliances").getAsJsonArray());
+                            showApplianceSelectionDialog(timeSlot, appliances);
+                        } else {
+                            showError(result.get("message").getAsString());
                         }
+                    } catch (Exception ex) {
+                        showError("Erreur de traitement");
+                        Log.e("TimeSlotAdapter", "Appliance parsing error", ex);
                     }
                 });
     }
 
-    private void applianceSelectionDialog(TimeSlot timeSlot, List<Appliance> appliances) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Sélection des appareils");
+    private List<Appliance> parseAppliances(JsonArray appliancesArray) {
+        List<Appliance> appliances = new ArrayList<>();
+        for (int i = 0; i < appliancesArray.size(); i++) {
+            JsonObject app = appliancesArray.get(i).getAsJsonObject();
+            appliances.add(new Appliance(
+                    app.get("id").getAsInt(),
+                    app.get("name").getAsString(),
+                    app.get("reference").getAsString(),
+                    app.get("wattage").getAsInt()
+            ));
+        }
+        return appliances;
+    }
 
-        String[] applianceNames = new String[appliances.size()];
-        boolean[] checkedItems = new boolean[appliances.size()];
-        List<Appliance> selectedAppliances = new ArrayList<>();
-
-        for (int i = 0; i < appliances.size(); i++) {
-            Appliance appliance = appliances.get(i);
-            applianceNames[i] = appliance.getName() + " (" + appliance.getWattage() + "W)";
+    private void showApplianceSelectionDialog(TimeSlot timeSlot, List<Appliance> appliances) {
+        if (appliances.isEmpty()) {
+            showError("Aucun appareil disponible");
+            return;
         }
 
-        builder.setMultiChoiceItems(applianceNames, checkedItems, (dialog, which, isChecked) -> {
-            if (isChecked) {
-                selectedAppliances.add(appliances.get(which));
-            } else {
-                selectedAppliances.remove(appliances.get(which));
-            }
-        });
+        boolean[] checkedItems = new boolean[appliances.size()];
+        List<Appliance> selectedAppliances = new ArrayList<>();
+        String[] applianceNames = new String[appliances.size()];
 
-        builder.setPositiveButton("Confirmer", (dialog, which) -> {
-            if (!selectedAppliances.isEmpty()) {
-                // fais la reservation
-                makeReservation(timeSlot, selectedAppliances);
-            } else {
-                Toast.makeText(context, "Veuillez sélectionner au moins un appareil", Toast.LENGTH_SHORT).show();
-            }
-        });
+        for (int i = 0; i < appliances.size(); i++) {
+            applianceNames[i] = appliances.get(i).getName() + " (" + appliances.get(i).getWattage() + "W)";
+        }
 
-        builder.setNegativeButton("Annuler", (dialog, which) -> dialog.dismiss());
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        new AlertDialog.Builder(context)
+                .setTitle("Sélectionnez les appareils")
+                .setMultiChoiceItems(applianceNames, checkedItems, (dialog, which, isChecked) -> {
+                    if (isChecked) {
+                        selectedAppliances.add(appliances.get(which));
+                    } else {
+                        selectedAppliances.remove(appliances.get(which));
+                    }
+                })
+                .setPositiveButton("Confirmer", (dialog, which) -> {
+                    if (!selectedAppliances.isEmpty()) {
+                        makeReservation(timeSlot, selectedAppliances);
+                    } else {
+                        showError("Veuillez sélectionner au moins un appareil");
+                    }
+                })
+                .setNegativeButton("Annuler", null)
+                .show();
     }
 
     private void makeReservation(TimeSlot timeSlot, List<Appliance> appliances) {
@@ -409,77 +296,64 @@ public class TimeSlotAdapter extends RecyclerView.Adapter<TimeSlotAdapter.TimeSl
         }
 
         if (totalWattage > timeSlot.getAvailableWattage()) {
-            Toast.makeText(context, "Capacité dépassée pour ce créneau", Toast.LENGTH_SHORT).show();
+            showError("Capacité dépassée pour ce créneau");
             return;
         }
 
-        sendReservationToServer(timeSlot, appliances);
-    }
+        JsonObject jsonBody = new JsonObject();
+        jsonBody.addProperty("time_slot_id", timeSlot.getId());
 
-    private void sendReservationToServer(TimeSlot timeSlot, List<Appliance> appliances) {
-        String url = "http://192.168.1.19/ecopower/addReservation.php";
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.FRENCH);
-        String startTime = dateFormat.format(timeSlot.getBegin());
-        String endTime = dateFormat.format(timeSlot.getEnd());
-        int maxWattage = timeSlot.getMaxWattage();
-
-        JSONArray appliancesArray = new JSONArray();
+        JsonArray appliancesArray = new JsonArray();
         for (Appliance appliance : appliances) {
-            JSONObject appJson = new JSONObject();
-            try {
-                appJson.put("id", appliance.getId());
-                appJson.put("wattage", appliance.getWattage());
-                appliancesArray.put(appJson);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            JsonObject appJson = new JsonObject();
+            appJson.addProperty("id", appliance.getId());
+            appJson.addProperty("wattage", appliance.getWattage());
+            appliancesArray.add(appJson);
         }
+        jsonBody.add("appliances", appliancesArray);
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences("user_session", Context.MODE_PRIVATE);
-        String email = sharedPreferences.getString("email", "");
+        SharedPreferences prefs = context.getSharedPreferences("user_session", Context.MODE_PRIVATE);
+        String email = prefs.getString("email", "");
 
         Ion.with(context)
-                .load(url)
-                .setBodyParameter("email", email)
-                .setBodyParameter("slot_key", timeSlot.getSlotKey())
-                .setBodyParameter("start_time", startTime)
-                .setBodyParameter("end_time", endTime)
-                .setBodyParameter("max_wattage", String.valueOf(maxWattage))
-                .setBodyParameter("appliances", appliancesArray.toString())
-                .asString()
-                .setCallback(new FutureCallback<String>() {
-                    @Override
-                    public void onCompleted(Exception e, String result) {
-                        if (e != null) {
-                            return;
-                        }
+                .load(BASE_URL + "addReservation.php")
+                .setJsonObjectBody(jsonBody)
+                .asJsonObject()
+                .setCallback((e, result) -> {
+                    if (e != null) {
+                        showError("Erreur réseau");
+                        return;
+                    }
 
-                        try {
-                            JSONObject response = new JSONObject(result);
-                            if ("success".equals(response.getString("status"))) {
-                                // Mise à jour locale
-                                for (Appliance appliance : appliances) {
-                                    Booking booking = new Booking();
-                                    booking.appliance = appliance;
-                                    booking.timeSlot = timeSlot;
-                                    timeSlot.getBookings().add(booking);
-                                }
-
-                                saveReservations();
-
-                                notifyDataSetChanged();
-                                Toast.makeText(context, "Réservation enregistrée", Toast.LENGTH_SHORT).show();
+                    try {
+                        if (result.get("status").getAsString().equals("success")) {
+                            for (Appliance appliance : appliances) {
+                                timeSlot.getBookings().add(new Booking(appliance, timeSlot));
                             }
-                        } catch (JSONException ex) {
+                            notifyDataSetChanged();
+                            Toast.makeText(context, "Réservation confirmée", Toast.LENGTH_SHORT).show();
+                        } else {
+                            showError(result.get("message").getAsString());
                         }
+                    } catch (Exception ex) {
+                        showError("Erreur de traitement");
+                        Log.e("TimeSlotAdapter", "Reservation error", ex);
                     }
                 });
+    }
+
+    private void showError(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public int getItemCount() {
         return timeSlots.size();
+    }
+
+    public void updateTimeSlots(List<TimeSlot> newTimeSlots) {
+        this.timeSlots = newTimeSlots;
+        notifyDataSetChanged();
     }
 
     static class TimeSlotViewHolder extends RecyclerView.ViewHolder {
