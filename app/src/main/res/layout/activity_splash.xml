@@ -6,41 +6,68 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green"
-    tools:context=".SplashActivity"
+    android:gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="45dp"
-        android:paddingTop="100dp"
         android:gravity="center"
+        android:text="@string/app_name"
         android:textColor="@color/white"
-        android:fontFamily=""/>
+        android:textSize="45sp"
+        android:layout_marginBottom="20dp" />
 
-
-    <ImageView
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="416dp"
-        android:cropToPadding="true"
-        android:padding="90dp"
-        android:src="@drawable/img"
-        tools:ignore="MissingConstraints" />
+        android:layout_height="450dp">
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="200dp"
+            android:background="@drawable/dot_splash"
+            android:rotation="-90" />
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/lines_splash"
+            android:rotation="-50" />
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/img" />
+
+        <View
+            android:layout_marginStart="310dp"
+            android:layout_marginTop="300dp"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:background="@drawable/lines_splash"
+            android:rotation="15" />
+
+        <View
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/dot_splash"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="320dp"
+            android:rotation="30" />
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Developped by Lucie, Rita and Lucas"
-        android:textAlignment="center"
-        android:textSize="20dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        tools:ignore="MissingConstraints"
-        android:textColor="@color/white"/>
-
-    <ImageView
-    android:layout_width="141dp"
-    android:layout_height="match_parent"
-    android:src="@drawable/forme" />
+        android:text="Developped by Lucas L, Rita H and Lucie P"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp" />
 
 </LinearLayout>
