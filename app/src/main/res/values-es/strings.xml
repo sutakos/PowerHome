@@ -26,4 +26,6 @@
     <string name="consommation_totale">Consumo total :</string>
     <string name="equipments">Equipo</string>
     <string name="etage">PISO</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="settings_par">Settings</string>
 </resources>

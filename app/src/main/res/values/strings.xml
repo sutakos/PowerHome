@@ -74,4 +74,6 @@
     <string name="consommation_totale">Total wattage :</string>
     <string name="equipments">equipments</string>
     <string name="etage">FLOOR</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="settings_par">Settings</string>
 </resources>

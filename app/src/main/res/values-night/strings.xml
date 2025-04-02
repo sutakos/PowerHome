@@ -3,4 +3,6 @@
     <string name="gaetan_leclair_toodo_com">gaetan_leclair_toodo_com</string>
     <string name="votre_consommation">Votre consommation</string>
     <string name="welcome_on">Welcome on</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="settings_par">Settings</string>
 </resources>

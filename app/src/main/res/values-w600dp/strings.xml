@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="welcome_on">Welcome on</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="settings_par">Settings</string>
 </resources>
