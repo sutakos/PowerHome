@@ -8,7 +8,8 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".LoginActivity"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
