@@ -1,20 +1,25 @@
 package iut.dam.powerhome.fragments;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Switch;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import android.content.SharedPreferences;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
+import iut.dam.powerhome.MainActivity;
 import iut.dam.powerhome.R;
 
 public class ParametresFragment extends Fragment {
@@ -32,30 +37,15 @@ public class ParametresFragment extends Fragment {
         getActivity().setTitle("Paramètres");
         View rootView=inflater.inflate(R.layout.fragment_parametres, container, false);
         swt = rootView.findViewById(R.id.darkmode);
-        sharedPrefs = requireActivity().getSharedPreferences("app_settings", 0);
-
-        // Configurer le switch selon le thème actuel
-        boolean isDarkMode = sharedPrefs.getBoolean("dark_mode", false);
-        swt.setChecked(isDarkMode);
+        SharedPreferences prefs = requireActivity().getSharedPreferences("app_settings", MODE_PRIVATE);
+        swt.setChecked(prefs.getBoolean("dark_mode", false));
 
         // Gestion du changement de thème
         swt.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            // Sauvegarder la préférence
-            SharedPreferences.Editor editor = sharedPrefs.edit();
-            editor.putBoolean("dark_mode", isChecked);
-            editor.apply();
-
-            // Appliquer le thème
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-
-            // Redémarrer l'activité pour appliquer le thème
-            requireActivity().recreate();
+            ((MainActivity)requireActivity()).toggleDarkMode(isChecked);
         });
 
         return rootView;
     }
+
 }

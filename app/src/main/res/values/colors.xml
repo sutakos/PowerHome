@@ -15,4 +15,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="light_green">#50C878</color>
 
+    <!-- light and night mode pour le nav_bar -->
+    <color name="light_navbar">#FFFFFFFF</color> <!-- Blanc -->
+    <color name="dark_navbar">#FF1A1A1A</color> <!-- Noir foncé -->
 </resources>

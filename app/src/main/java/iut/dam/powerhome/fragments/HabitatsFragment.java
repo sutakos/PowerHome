@@ -28,7 +28,7 @@ import iut.dam.powerhome.R;
 
 
 public class HabitatsFragment extends Fragment {
-    String urlString = "http://10.0.2.2/powerhome_server/getHabitats.php";
+    String urlString = "http://192.168.1.30/powerhome_server/getHabitats.php";
     List<Habitat> habitats = new ArrayList<>();
     ProgressDialog pDialog;
     HabitatAdapter adapter;
@@ -68,7 +68,7 @@ public class HabitatsFragment extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        String urlString = "http://192.168.1.19/powerhome_server/getHabitats_v2.php?token=0645901e34c2fbe1c0e3761642e728a3";
+        String urlString = "http://192.168.1.30/powerhome_server/getHabitats_v2.php?token=0645901e34c2fbe1c0e3761642e728a3";
         Ion.with(this.getActivity())
                 .load(urlString)
                 .asString()
