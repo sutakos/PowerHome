@@ -12,7 +12,7 @@
         android:orientation="horizontal"
         android:elevation="4dp"
         android:padding="16dp"
-        android:background="@color/white"
+        android:background="@color/bg_num_habitat"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:layout_marginStart="8dp"
@@ -26,6 +26,7 @@
 
             <TextView
                 android:id="@+id/residentName"
+                android:textColor="@color/name_floor_habitat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gaëtan Leclair"
@@ -94,7 +95,7 @@
             android:layout_height="wrap_content"
             android:text="@string/etage"
             android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:textColor="@color/name_floor_habitat"
             android:paddingHorizontal="8dp"
             android:paddingVertical="4dp"
             android:layout_gravity="center_vertical"
@@ -114,7 +115,7 @@
                     android:gravity="center"
                     android:padding="5dp"
                     android:layout_gravity="center_vertical"
-                    android:textColor="@color/white"
+                    android:textColor="@color/bg_num_habitat"
                     />
         </LinearLayout>
         </LinearLayout>

@@ -57,7 +57,7 @@ public class HabitatAdapter extends ArrayAdapter<Habitat> {
         Habitat habitat = items.get(position);
         holder.residentName.setText(habitat.getResidentName());
         holder.etage.setText(String.valueOf(habitat.getFloor()));
-        holder.nbEquip.setText(String.valueOf(habitat.nbEquipement()));
+        holder.nbEquip.setText(String.valueOf(habitat.nbEquipement())+" ");
 
         // Affichage des appareils
         for (int i = 0; i < habitat.getAppliances().size() && i < 4; i++) {

@@ -68,7 +68,7 @@ public class HabitatsFragment extends Fragment {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        String urlString = "http://192.168.1.30/powerhome_server/getHabitats_v2.php?token=0645901e34c2fbe1c0e3761642e728a3";
+        String urlString = "http://10.0.2.2/powerhome_server/getHabitats_v2.php?token=8e3b51053f2cb5a05c93984f95610e43";
         Ion.with(this.getActivity())
                 .load(urlString)
                 .asString()
@@ -77,13 +77,11 @@ public class HabitatsFragment extends Fragment {
                     @Override
                     public void onCompleted(Exception e, Response<String> result) {
                         Response<String> json = result;
-                        Log.d("JSON Response", json.getResult());
                         pDialog.dismiss();
                         if(result == null)
                             Log.d(TAG, "No response from the server!!!");
                         else {
                             // Traitement de result
-                            Toast.makeText(HabitatsFragment.this.getActivity(), json.getResult(), Toast.LENGTH_SHORT).show();
                             habitats.clear();
                             habitats.addAll(Habitat.getListFromJson(json.getResult()));
                             initializeAdapter();

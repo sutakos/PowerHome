@@ -18,4 +18,8 @@
     <!-- light and night mode pour le nav_bar -->
     <color name="light_navbar">#FFFFFFFF</color> <!-- Blanc -->
     <color name="dark_navbar">#FF1A1A1A</color> <!-- Noir foncé -->
+
+    <color name="bg_num_habitat">#FFFFFF</color>
+    <color name="name_floor_habitat">#FF000000</color>
+
 </resources>
